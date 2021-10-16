@@ -15,6 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelListing.IRepository;
+using HotelListing.Repository;
 
 namespace HotelListing
 {
@@ -34,7 +36,9 @@ namespace HotelListing
                 options.UseSqlServer(Configuration.GetConnectionString("MssqlConnection"))
             );
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(option => 
+                option.SerializerSettings.ReferenceLoopHandling = 
+                Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddCors(policy =>
             {
@@ -45,6 +49,7 @@ namespace HotelListing
             });
 
             services.AddAutoMapper(typeof(MapperInitializer));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSwaggerGen(c =>
             {
