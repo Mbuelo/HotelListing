@@ -17,6 +17,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using HotelListing.IRepository;
 using HotelListing.Repository;
+using Microsoft.AspNetCore.Identity;
+using HotelListing.Services;
 
 namespace HotelListing
 {
@@ -35,6 +37,9 @@ namespace HotelListing
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MssqlConnection"))
             );
+
+            services.AddAuthentication();
+            services.ConfigureIdentity();
 
             services.AddControllers().AddNewtonsoftJson(option => 
                 option.SerializerSettings.ReferenceLoopHandling = 
